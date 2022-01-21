@@ -1,6 +1,8 @@
 import os from 'os'
 import path from 'path'
 import { app, BrowserWindow } from 'electron'
+import registerMenu from './utils/register-menu.js';
+import { readSetting } from './utils/settings.js';
 
 // https://stackoverflow.com/questions/42524606/how-to-get-windows-version-using-node-js
 const isWin7 = os.release().startsWith('6.1')
@@ -15,6 +17,11 @@ let win: BrowserWindow | null = null
 
 async function createWindow() {
   win = new BrowserWindow({
+    minWidth: 800,
+    minHeight: 600,
+    titleBarStyle: 'hidden',
+    autoHideMenuBar: true,
+    alwaysOnTop: readSetting('floatOnTop', false),
     webPreferences: {
       preload: path.join(__dirname, '../preload/index.cjs'),
     },
@@ -32,6 +39,8 @@ async function createWindow() {
 }
 
 app.whenReady().then(createWindow)
+
+registerMenu();
 
 app.on('window-all-closed', () => {
   win = null

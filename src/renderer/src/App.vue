@@ -1,55 +1,132 @@
-<script setup lang="ts">
-// This starter template is using Vue 3 <script setup> SFCs
-// Check out https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup
-import HelloWorld from './components/HelloWorld.vue'
-</script>
-
 <template>
-  <div class="logo-box">
-    <img style="height:140px;" src="./assets/electron.png" alt="Electron logo">
-    <span/>
-    <img style="height:140px;" alt="Vite logo" src="./assets/vite.svg" />
-    <span/>
-    <img style="height:140px;" alt="Vue logo" src="./assets/vue.png" />
-  </div>
-  <HelloWorld msg="Hello Vue 3 + TypeScript + Vite" />
-  <div class="static-public">
-    Place static files into the <code>src/renderer/public</code> folder
-    <img style="width:90px;" :src="'./images/node.png'" />
+  <div class="h-screen w-screen flex flex-col pt-12">
+    <nav
+      class="w-screen items-center flex justify-center z-0 fixed top-0 py-2"
+      style="-webkit-app-region: drag"
+    >
+      <h1 class="text-sm text-sky-500 font-medium">Ghost Note</h1>
+    </nav>
+
+    <transition name="fade" appear>
+      <div class="grid grid-flow-col h-full divide-x divide-gray-300 gap-2">
+        <div
+          v-for="(pane, index) in panes"
+          :key="`pane-${index}`"
+          class="h-full p-4"
+        >
+          <div class="h-full grid grid-flow-row divide-y divide-gray-300 gap-2">
+            <textarea
+              :ref="`textarea-${index}`"
+              v-model="pane.text"
+              @keydown.meta.e.exact="closePane(index)"
+              @keydown.ctrl.e.exact="closePane(index)"
+              @keydown.meta.d.exact="addPaneHorizontally(index)"
+              @keydown.ctrl.d.exact="addPaneHorizontally(index)"
+              @keydown.meta.shift.d.exact="addPaneVertically(index)"
+              @keydown.ctrl.shift.d.exact="addPaneVertically(index)"
+              class="w-full h-full appearance-none resize-none leading-relaxed focus:outline-none bg-transparent caret-sky-500 selection:bg-sky-200 selection:text-sky-900"
+            />
+
+            <textarea
+              v-for="(pane, paneIndex) in pane.panes"
+              :key="`pane-${index}-${paneIndex}`"
+              :ref="`textarea-${index}-${paneIndex}`"
+              v-model="pane.text"
+              @keydown.meta.e.exact="closePane(index, paneIndex)"
+              @keydown.ctrl.e.exact="closePane(index, paneIndex)"
+              @keydown.meta.d.exact="addPaneHorizontally(index)"
+              @keydown.ctrl.d.exact="addPaneHorizontally(index)"
+              @keydown.meta.shift.d.exact="addPaneVertically(index)"
+              @keydown.ctrl.shift.d.exact="addPaneVertically(index)"
+              class="w-full py-8 h-full appearance-none resize-none leading-relaxed focus:outline-none bg-transparent caret-sky-500 selection:bg-sky-200 selection:text-sky-900"
+            />
+          </div>
+        </div>
+      </div>
+    </transition>
   </div>
 </template>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+<script>
+  export default {
+    name: 'App',
 
-.logo-box {
-  display: flex;
-  width: 100%;
-  justify-content: center;
-}
+    data() {
+      return {
+        panes: [
+          {
+            text: '',
+            panes: [],
+          },
+        ],
+      }
+    },
 
-.logo-box span {
-  width: 74px;
-}
+    methods: {
+      closePane(index, childIndex = null) {
+        const isChildPane = childIndex !== null;
 
-.static-public {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
+        let paneIndexToFocusOn = null;
+        let currentPaneIndex = isChildPane ? childIndex : index;
+        let panes = isChildPane ? this.panes[index].panes : this.panes;
 
-.static-public code {
-  background-color: #eee;
-  padding: 2px 4px;
-  margin: 0 4px;
-  border-radius: 4px;
-  color: #304455;
-}
-</style>
+        if (! isChildPane && this.panes.length == 1) {
+          return;
+        }
+
+        // try to grab a previous pane first
+        if (panes?.[currentPaneIndex - 1] != 'undefined') {
+          paneIndexToFocusOn = currentPaneIndex - 1;
+        }
+
+        // Otherwise - default to the next pane
+        if (paneIndexToFocusOn === null && panes?.[currentPaneIndex + 1] != 'undefined') {
+          paneIndexToFocusOn = currentPaneIndex + 1;
+        }
+
+        // Remove the given pane
+        panes.splice(currentPaneIndex, 1);
+
+        if (isChildPane) {
+          if (paneIndexToFocusOn === null || paneIndexToFocusOn === -1) {
+            this.$nextTick(() => this.focusPane(index))
+
+            return;
+          }
+
+          this.$nextTick(() => this.focusPane(index, paneIndexToFocusOn));
+
+          return;
+        }
+
+        // Set focus state on a different pane
+        paneIndexToFocusOn != null && this.$nextTick(() => this.focusPane(paneIndexToFocusOn));
+      },
+
+      focusPane(parentIndex, childIndex = null) {
+        const ref = childIndex !== null
+          ? `textarea-${parentIndex}-${childIndex}`
+          : `textarea-${parentIndex}`;
+
+        this.$refs[ref]?.[0].focus();
+      },
+
+      addPaneHorizontally(index) {
+        this.panes.push({
+          text: '',
+          panes: [],
+        });
+
+        this.$nextTick(() => this.focusPane(this.panes.length - 1));
+      },
+
+      addPaneVertically(index) {
+        this.panes[index].panes.push({
+          text: '',
+        });
+
+        this.$nextTick(() => this.focusPane(index, this.panes[index].panes.length - 1));
+      }
+    },
+  }
+</script>

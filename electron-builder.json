@@ -24,6 +24,17 @@
     ],
     "artifactName": "${productName}_${version}.${ext}"
   },
+  "linux": {
+    "target": [
+      {
+        "target": "AppImage",
+        "arch": [
+          "x64"
+        ]
+      }
+    ],
+    "artifactName": "${productName}_${version}.${ext}"
+  },
   "nsis": {
     "oneClick": false,
     "perMachine": false,
