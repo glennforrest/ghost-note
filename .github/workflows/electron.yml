@@ -1,11 +1,20 @@
-name: CI
+name: Build
 
-on:
-  push:
-    branches:
-      - main
+on: [push, pull_request]
 
 jobs:
+  build_on_linux:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-node@master
+      with:
+        node-version: 16
+    - name: install dependencies
+      run: yarn install
+    - name: build
+      run: yarn build
+
   build_on_mac:
     runs-on: macOS-latest
     steps:
@@ -15,6 +24,10 @@ jobs:
           node-version: 16
       - name: see directory
         run: ls
+      - name: install dependencies
+        run: yarn install
+      - name: build
+        run: yarn build
 
   build_on_win:
     runs-on: windows-2016
@@ -25,3 +38,7 @@ jobs:
           node-version: 16
       - name: see directory
         run: ls
+      - name: install dependencies
+        run: yarn install
+      - name: build
+        run: yarn build
