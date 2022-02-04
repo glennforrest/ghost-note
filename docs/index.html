@@ -17,23 +17,55 @@
         }
       }
     </script>
+
+    <style type="text/tailwindcss">
+      @layer utilities {
+        del {
+          @apply text-slate-600;
+        }
+      }
+    </style>
   </head>
 
-  <body class="bg-gray-700 text-gray-200 min-h-screen flex flex-col justify-between">
-    <article class="h-full flex-1 flex items-center justify-center">
-      <section class="container prose prose-gray-200 text-center">
-        <h1 class="text-gray-200">
-          Ghost Note
-        </h1>
+  <body class="bg-slate-800 text-gray-200 min-h-screen flex flex-col justify-between">
+    <article class="h-full flex-1 flex items-center justify-center my-12">
+      <section class="container prose prose-invert prose-a:text-sky-400 hover:prose-a:text-sky-300">
+        <div class="flex my-16 flex-col items-center space-y-6 md:space-y-0 md:flex-row md:space-x-4 md:my-0">
+          <h1 class="text-sky-400 text-6xl">
+            Ghost Note
+          </h1>
 
-        <h3 class="text-gray-300">Coming Soon</h3>
+          <img class="h-[300px]" src="/ghost-note-logo.svg" alt="Ghost Note Logo" />
+        </div>
+
+        <p>
+          <span class="text-sky-400">Ghost Note</span> is a <del>large textarea in a window</del> simple note taking desktop application that throws away whatever you write as soon as you close the window.
+        </p>
+
+        <h3>Why?</h3>
+
+        <p>
+          Sometimes you just need to quickly modify some text in a notepad with no intentions of saving it. Dealing with the save prompt was so much of a hassle that I thought, yep I should waste my time making an application only I will use <del>I probably won't even use it...</del>.
+        </p>
+
+        <div class="mt-8 mb-16">
+          <button type="button" class="inline-flex items-center space-x-2 px-4 py-2 border border-transparent shadow-sm text-base font-medium rounded-md text-white bg-sky-600 hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+            </svg>
+
+            <span>Download</span>
+          </button>
+        </div>
+
+        <p>Notice anything <del>shit</del> not working? Feel free to <del>spam me</del> open up an issue <a href="https://github.com/glennforrest/ghost-note">here</a></p>
       </section>
     </article>
 
-    <footer class="bg-white">
+    <footer class="bg-slate-700">
       <div class="max-w-7xl mx-auto py-8 px-4 sm:px-6 md:flex md:items-center md:justify-between lg:px-8">
         <div class="flex justify-center space-x-6 md:order-2">
-          <a href="https://github.com/glennforrest/ghost-note" target="_blank" class="text-gray-400 hover:text-gray-500">
+          <a href="https://github.com/glennforrest/ghost-note" target="_blank" class="text-gray-200 hover:text-gray-300">
             <span class="sr-only">GitHub</span>
 
             <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -43,8 +75,8 @@
         </div>
 
         <div class="mt-8 md:mt-0 md:order-1">
-          <p class="text-center text-base text-gray-400">
-            Built by <a class="" href="https://github.com/glennforrest" target="_blank">Glenn Forrest <span class="text-sm">🥝</span></a>
+          <p class="text-center text-base text-gray-300">
+            Built by <a class="hover:underline" href="https://github.com/glennforrest" target="_blank">Glenn Forrest <span class="text-sm">🥝</span></a>
           </p>
         </div>
       </div>
