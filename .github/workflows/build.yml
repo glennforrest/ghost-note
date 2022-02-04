@@ -16,7 +16,7 @@ jobs:
       run: yarn build
 
   build_on_mac:
-    runs-on: macOS-latest
+    runs-on: macos-latest
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@main
@@ -30,7 +30,7 @@ jobs:
         run: yarn build
 
   build_on_win:
-    runs-on: windows-2016
+    runs-on: windows-latest
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@main
