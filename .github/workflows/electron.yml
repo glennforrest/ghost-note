@@ -9,9 +9,7 @@ jobs:
   build_on_mac:
     runs-on: macOS-latest
     steps:
-      - uses: actions/checkout@main
-        with:
-          ref: main
+      - uses: actions/checkout@v2
       - uses: actions/setup-node@main
         with:
           node-version: 16
@@ -21,9 +19,7 @@ jobs:
   build_on_win:
     runs-on: windows-2016
     steps:
-      - uses: actions/checkout@main
-        with:
-          ref: feature/github-actions
+      - uses: actions/checkout@v2
       - uses: actions/setup-node@main
         with:
           node-version: 16
