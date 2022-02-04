@@ -1,0 +1,31 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build_on_mac:
+    runs-on: macOS-latest
+    steps:
+      - uses: actions/checkout@main
+        with:
+          ref: main
+      - uses: actions/setup-node@main
+        with:
+          node-version: 16
+      - name: see directory
+        run: ls
+
+  build_on_win:
+    runs-on: windows-2016
+    steps:
+      - uses: actions/checkout@main
+        with:
+          ref: feature/github-actions
+      - uses: actions/setup-node@main
+        with:
+          node-version: 16
+      - name: see directory
+        run: ls
