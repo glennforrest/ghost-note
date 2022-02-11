@@ -3,6 +3,7 @@ import path from 'path'
 import { app, BrowserWindow } from 'electron'
 import registerMenu from './utils/register-menu.js';
 import { readSetting } from './utils/settings.js';
+import { autoUpdater } from 'electron-updater';
 
 // https://stackoverflow.com/questions/42524606/how-to-get-windows-version-using-node-js
 const isWin7 = os.release().startsWith('6.1')
@@ -29,6 +30,8 @@ async function createWindow() {
 
   if (app.isPackaged) {
     win.loadFile(path.join(__dirname, '../renderer/index.html'))
+
+    autoUpdater.checkForUpdatesAndNotify();
   } else {
     const pkg = await import('../../package.json')
     const url = `http://${pkg.env.HOST || '127.0.0.1'}:${pkg.env.PORT}`

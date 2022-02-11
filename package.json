@@ -6,9 +6,14 @@
   "license": "ISC",
   "productName": "Ghost Note",
   "description": "Write notes that disappear as soon as you close the application - like a spooky ghost",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/glennforrest/ghost-note"
+  },
   "scripts": {
     "dev": "node scripts/watch.mjs",
-    "build": "vue-tsc --noEmit && node scripts/build.mjs && electron-builder -mwl"
+    "build": "vue-tsc --noEmit && node scripts/build.mjs && electron-builder -mwl",
+    "build_publish": "vue-tsc --noEmit && node scripts/build.mjs && electron-builder -mwl -p always"
   },
   "engines": {
     "node": ">=16.0.0"
@@ -36,5 +41,8 @@
     "electron",
     "vue3",
     "rollup"
-  ]
+  ],
+  "dependencies": {
+    "electron-updater": "^4.6.5"
+  }
 }
